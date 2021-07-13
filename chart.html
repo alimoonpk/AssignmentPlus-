@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Students Ranking Chart</title>
+<link  rel="stylesheet" href="css/bootstrap.min.css"/>
+<link  rel="stylesheet" href="css/bootstrap-theme.min.css"/>    
+<link rel="stylesheet" href="css/main.css">
+<link  rel="stylesheet" href="css/font.css">
+<style type="text/css">
+BODY {
+	background: url("image/wallpaper.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+h1{
+	font-size: 60px;
+	text-align:justify;
+	text-indent: 50px;
+	background-color: whitesmoke;
+    width:auto;
+    height:auto;
+    border-radius: 25px;
+    text-align: left;
+    padding: 5px 40px;
+    box-sizing: border-box;
+}
+
+#chart-container {
+	position: absolute;
+    top: 50%;
+    margin-top:auto;
+    left: 50%;
+    margin-left:auto;
+    background-color: whitesmoke;
+    width:auto;
+    height:auto;
+    border-radius: 25px;
+    text-align: center;
+    padding: 5px 40px;
+    box-sizing: border-box;
+}
+	
+.btn{
+    background-color: #59c2c5;
+    width: 38%;
+    height: 48px;
+    border-radius: 8px;
+    margin-top: 40px;
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+}
+.btn:hover{
+    background-color: #59c2a0;
+}
+</style>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/Chart.min.js"></script>
+
+
+</head>
+<body>
+	<h1>Student Mark Chart</h1>
+    <div id="chart-container">
+        <canvas id="graphCanvas"></canvas>
+		<a class="btn" href="http://localhost/OASS/dash.php">Back</a>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            showGraph();
+        });
+
+
+        function showGraph()
+        {
+            {
+                $.post("data.php",
+                function (data)
+                {
+                    console.log(data);
+                     var name = [];
+                    var marks = [];
+
+                    for (var i in data) {
+                        name.push(data[i].email);
+                        marks.push(data[i].score);
+                    }
+
+                    var chartdata = {
+                        labels: name,
+                        datasets: [
+                            {
+                                label: 'Student Marks',
+                                backgroundColor: '#49e2ff',
+                                borderColor: '#46d5f1',
+                                hoverBackgroundColor: '#CCCCCC',
+                                hoverBorderColor: '#666666',
+                                data: marks
+                            }
+                        ]
+                    };
+
+                    var graphTarget = $("#graphCanvas");
+
+                    var barGraph = new Chart(graphTarget, {
+                        type: 'bar',
+                        data: chartdata
+                    });
+                });
+            }
+        }
+        </script>
+
+</body>
+</html>
